@@ -3,9 +3,12 @@ using Avalonia.Metadata;
 using Avalonia.Platform;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui;
+using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Handlers;
+using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Platform;
+using System;
 using ContentView = Microsoft.Maui.Controls.ContentView;
 
 namespace Avalonia.Maui.Controls;
@@ -72,6 +75,34 @@ public class MauiControlHost : NativeControlHost
 #elif IOS
         return new iOS.UIViewControlHandle(native);
 #endif
+#elif WINDOWS10_0_19041_0_OR_GREATER
+
+        var pageHandler = new ContentViewHandler();
+        pageHandler.SetMauiContext(AvaloniaAppBuilderExtensions.Context);
+
+            _page = new ContentView
+            {
+                Handler = pageHandler,
+                Content = Content
+            };
+
+            _page.Background = Brush.Transparent;
+
+            var window = new MauiWinUIWindow();
+            window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+            window.AppWindow.SetPresenter(Microsoft.UI.Windowing.AppWindowPresenterKind.FullScreen);
+            window.Content = _page.ToPlatform(AvaloniaAppBuilderExtensions.Context);
+
+            if (window.Content is Microsoft.UI.Xaml.FrameworkElement rootElement)
+            {
+                rootElement.RequestedTheme = (PlatformThemeVariant?)Avalonia.Application.Current.ActualThemeVariant == PlatformThemeVariant.Dark
+                    ? Microsoft.UI.Xaml.ElementTheme.Dark
+                    : Microsoft.UI.Xaml.ElementTheme.Light;
+            }
+
+            window.Activate();
+
+            return new PlatformHandle(window.WindowHandle, "HWMD");
 #else
         return base.CreateNativeControlCore(parent);
 #endif

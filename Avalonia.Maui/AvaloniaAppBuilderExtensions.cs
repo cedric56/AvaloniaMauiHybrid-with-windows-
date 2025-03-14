@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Reflection;
+using System.Reflection.PortableExecutable;
+using System.Runtime.Loader;
+using System.Threading.Tasks;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Maui.Handlers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Dispatching;
+using Microsoft.Maui.Embedding;
+using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Platform;
+using Moq;
 using MauiWindow = Microsoft.Maui.Controls.Window;
 #if IOS
 using PlatformWindow = UIKit.UIWindow;
@@ -21,11 +33,16 @@ namespace Avalonia.Maui;
 
 public static class AvaloniaAppBuilderExtensions
 {
+    public static MauiContext Context { get; set; }
+
 #if ANDROID
     public static AppBuilder UseMaui<TMauiApplication>(this AppBuilder appBuilder, global::Android.App.Activity activity, Action<MauiAppBuilder>? configure = null)
         where TMauiApplication : Microsoft.Maui.Controls.Application
 #elif IOS
     public static AppBuilder UseMaui<TMauiApplication>(this AppBuilder appBuilder, IUIApplicationDelegate applicationDelegate, Action<MauiAppBuilder>? configure  = null)
+        where TMauiApplication : Microsoft.Maui.Controls.Application
+#elif WINDOWS10_0_19041_0_OR_GREATER
+    public static AppBuilder UseMaui<TMauiApplication>(this AppBuilder appBuilder, Action<MauiAppBuilder>? configure = null)
         where TMauiApplication : Microsoft.Maui.Controls.Application
 #else
     public static AppBuilder UseMaui<TMauiApplication>(this AppBuilder appBuilder, Action<MauiAppBuilder>? configure  = null)
@@ -47,12 +64,29 @@ public static class AvaloniaAppBuilderExtensions
 	                .AddSingleton(applicationDelegate ?? UIApplication.SharedApplication.Delegate)
 	                .AddSingleton<UIWindow>(static p => p.GetService<IUIApplicationDelegate>()!.GetWindow())
 #endif
+
                     .AddSingleton<IMauiInitializeService, MauiEmbeddingInitializer>();
+
+#if WINDOWS10_0_19041_0_OR_GREATER
+
+                Microsoft.UI.Dispatching.DispatcherQueueController.CreateOnCurrentThread();
+
+
+                Microsoft.UI.Xaml.Hosting.WindowsXamlManager.InitializeForCurrentThread();
+
+                var WinUIWindow = new MauiWinUIWindow();
+                
+                Microsoft.Maui.ApplicationModel.Platform.OnPlatformWindowInitialized(WinUIWindow);
+#endif
 
                 configure?.Invoke(builder);
 
+                Context = new MauiContext(builder.Services.BuildServiceProvider());
+
+#if !WINDOWS10_0_19041_0_OR_GREATER
                 var mauiApp = builder.Build();
                 InitializeMauiEmbeddingApp(mauiApp);
+#endif
             });
     }
 
@@ -92,8 +126,9 @@ public static class AvaloniaAppBuilderExtensions
         {
             service.Initialize(rootContext.Services);
         }
-
+#if !WINDOWS10_0_19041_0_OR_GREATER
         platformApplication.SetApplicationHandler(iApp, rootContext);
+#endif
         IPlatformApplication.Current = new EmbeddingApplication(services, iApp);
 
         if (iApp is Microsoft.Maui.Controls.Application { Handler.MauiContext: not null } app
@@ -104,7 +139,7 @@ public static class AvaloniaAppBuilderExtensions
         }
     }
 
-    private static Window CreateVirtualWindow(Microsoft.Maui.Controls.Application app, PlatformWindow? window)
+    private static Microsoft.Maui.Controls.Window CreateVirtualWindow(Microsoft.Maui.Controls.Application app, PlatformWindow? window)
     {
 #if ANDROID
         var services = app.Handler!.MauiContext!.Services;

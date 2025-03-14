@@ -6,6 +6,7 @@
              xmlns:progressBar="using:Syncfusion.Maui.ProgressBar"
              xmlns:player="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui.MediaElement"
              x:Class="AvaloniaSample.Views.MainView"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              x:DataType="vm:MainViewModel">
   <Grid RowDefinitions="Auto, Auto, 120, Auto, *">
     <UniformGrid Grid.Row="0"
@@ -14,9 +15,10 @@
       <TextBlock Text="Avalonia:" />
       <TextBlock Text="Maui:" />
       <Button Content="Button" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-              VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+              VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+              />
       <controls:MauiControlHost Height="40">
-        <mauiControls:Button Text="Button" />
+        <mauiControls:Button Text="Button" Clicked="Click" />
       </controls:MauiControlHost>
     </UniformGrid>
     
@@ -40,11 +42,15 @@
     
     <TextBlock Grid.Row="3"
                Text="MAUI CommunityToolkit:" Margin="10, 0" />
-    <controls:MauiControlHost Grid.Row="4"
-                              Margin="10">
-      <player:MediaElement Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
+    <controls:MauiControlHost  x:Name="host"
+                               Grid.Row="4" Margin="10" >
+      <!--<player:MediaElement Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
                            PositionChanged="MediaElement_OnPositionChanged"
-                           ShouldShowPlaybackControls="True" />
+                           ShouldShowPlaybackControls="True" />-->
+      <zxing:CameraBarcodeReaderView BarcodesDetected="BarcodesDetected" />
+
     </controls:MauiControlHost>
+    
   </Grid>
 </UserControl>

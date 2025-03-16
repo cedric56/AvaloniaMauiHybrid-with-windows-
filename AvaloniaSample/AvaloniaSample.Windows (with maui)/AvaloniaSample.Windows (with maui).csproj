@@ -15,10 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Mauis\App.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <MauiXaml Include="App.xaml" />
   </ItemGroup>
 
@@ -39,8 +35,5 @@
     <PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
     <PackageReference Include="Telerik.UI.for.Maui.Trial" Version="7.1.0" />
 
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mauis\" />
   </ItemGroup>
 </Project>

@@ -26,11 +26,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaSample.Android", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaSample.iOS", "AvaloniaSample\AvaloniaSample.iOS\AvaloniaSample.iOS.csproj", "{E92818E3-6BFA-4C9E-9481-3BECBACAFF0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaSample.Windows (Package)", "AvaloniaSample.Windows\AvaloniaSample.Windows (Package).csproj", "{BB58ED2A-40CE-46E1-AB71-AD50B7A0F8CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaSample.Windows (Package)", "AvaloniaSample\AvaloniaSample.Windows (Package)\AvaloniaSample.Windows (Package).csproj", "{BB58ED2A-40CE-46E1-AB71-AD50B7A0F8CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaSample.Windows (with winui3)", "AvaloniaSample.Windows (NonPackage)\AvaloniaSample.Windows (with winui3).csproj", "{96FD1D1C-E524-4608-B562-D4DA3F0B4749}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaSample.Windows (with winui3)", "AvaloniaSample\AvaloniaSample.Windows (with winui3)\AvaloniaSample.Windows (with winui3).csproj", "{96FD1D1C-E524-4608-B562-D4DA3F0B4749}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaSample.Windows (with maui)", "AvaloniaSample.WinUI\AvaloniaSample.Windows (with maui).csproj", "{472F5395-A507-43DE-B3B3-FA5C358E04FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaSample.Windows (with maui)", "AvaloniaSample\AvaloniaSample.Windows (with maui)\AvaloniaSample.Windows (with maui).csproj", "{472F5395-A507-43DE-B3B3-FA5C358E04FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

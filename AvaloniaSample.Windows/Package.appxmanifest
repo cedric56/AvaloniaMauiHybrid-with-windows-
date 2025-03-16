@@ -1,60 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
-  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
-  <Identity Name="maui-package-name-placeholder" Publisher="CN=User Name" Version="0.0.0.0" />
+  <Identity
+    Name="b3010cc9-544f-4a92-9e36-5d3acf9cd826"
+    Publisher="CN=cedri"
+    Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="60265C94-3861-4E32-B829-DDD025D75DE9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="b3010cc9-544f-4a92-9e36-5d3acf9cd826" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>$placeholder$</DisplayName>
-    <PublisherDisplayName>User Name</PublisherDisplayName>
-    <Logo>$placeholder$.png</Logo>
+    <DisplayName>App1</DisplayName>
+    <PublisherDisplayName>cedri</PublisherDisplayName>
+    <!-- <Logo>Assets\StoreLogo.png</Logo> -->
   </Properties>
 
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+    <!-- <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" /> -->
     <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
   </Dependencies>
 
   <Resources>
-    <Resource Language="x-generate" />
+    <Resource Language="x-generate"/>
   </Resources>
 
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe"  EntryPoint="$targetentrypoint$">
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="$placeholder$"
-        Description="$placeholder$"
-        Square150x150Logo="$placeholder$.png"
-        Square44x44Logo="$placeholder$.png"
-        BackgroundColor="transparent">
-        <uap:DefaultTile Square71x71Logo="$placeholder$.png" Wide310x150Logo="$placeholder$.png" Square310x310Logo="$placeholder$.png" />
-        <!-- <uap:SplashScreen Image="$placeholder$.png" /> -->
+        DisplayName="App1"
+        Description="App1"
+        BackgroundColor="transparent"
+        >
+        <!-- Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png" -->
+        <!-- <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" /> -->
+        <!-- <uap:SplashScreen Image="Assets\SplashScreen.png" /> -->
       </uap:VisualElements>
-       <Extensions>
-        <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="xamarinessentials">
-            <uap:DisplayName>xamarinessentials</uap:DisplayName>
-          </uap:Protocol>
-        </uap:Extension>
-      </Extensions>
-      <!-- <uap:Extension Category="windows.protocol">
-            <uap:Protocol Name="xamarinessentials">
-                <uap:DisplayName>xamarinessentials</uap:DisplayName>
-            </uap:Protocol>
-        </uap:Extension> -->
     </Application>
   </Applications>
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
-    <DeviceCapability Name="location"/>
-   
   </Capabilities>
-
 </Package>

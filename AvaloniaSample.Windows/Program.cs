@@ -35,6 +35,10 @@ namespace ClassLibray1
         [STAThread]
         public static void Main(string[] args)
         {
+            var thread = new System.Threading.Thread(() => Avalonia.Maui.Platforms.Windows.WinUIApp.Start());
+            thread.SetApartmentState(System.Threading.ApartmentState.STA);
+            thread.Start();
+
             var builder = BuildAvaloniaApp();
 
             builder.StartWithClassicDesktopLifetime(args);

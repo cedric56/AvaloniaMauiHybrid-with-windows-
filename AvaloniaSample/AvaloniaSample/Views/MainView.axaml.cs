@@ -9,6 +9,8 @@ using Microsoft.Maui.Media;
 using Syncfusion.Maui.ProgressBar;
 using System;
 using System.Threading;
+using Telerik.Maui.Controls;
+using Telerik.Windows.Documents.Model.Drawing.Charts;
 using ZXing.Net.Maui;
 
 namespace AvaloniaSample.Views;
@@ -19,6 +21,16 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
+
+        if(Microsoft.Maui.Controls.Application.Current != null)
+        {
+            var scheduler = new RadScheduler();
+            scheduler.ActiveViewDefinitionIndex = 0;
+            scheduler.ViewDefinitions.Add(new WeekViewDefinition());
+            scheduler.ViewDefinitions.Add(new DayViewDefinition());
+            scheduler.ViewDefinitions.Add(new MonthViewDefinition());
+            telerik.Content = scheduler;
+        }
     }
 
     public async void Click(object sender, EventArgs e)
@@ -35,7 +47,7 @@ public partial class MainView : UserControl
         progressBar.Maximum = 1;
         progressBar.Progress = e.Position / mediaElement.Duration;
     }
-    protected void BarcodesDetected(object sender, BarcodeDetectionEventArgs e)
+    public void BarcodesDetected(object sender, BarcodeDetectionEventArgs e)
     {
         foreach (var barcode in e.Results)
             Console.WriteLine($"Barcodes: {barcode.Format} -> {barcode.Value}");

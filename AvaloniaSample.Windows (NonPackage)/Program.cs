@@ -36,6 +36,8 @@ using System.Threading.Tasks;
 using Windows.Media.Playback;
 using WinRT.Interop;
 using ZXing.Net.Maui.Controls;
+using Telerik.Maui.Controls;
+using Telerik.Maui.Controls.Compatibility;
 using static ClassLibray1.MediaElementHandlerEx;
 
 namespace ClassLibray1
@@ -59,6 +61,7 @@ namespace ClassLibray1
             return AppBuilder.Configure<App>()
                 .UseMaui<MauiApplication>((b) =>
                 {
+                    b.UseTelerik();
                     b.Services.AddLogging(logging =>
                     {
                         //logging.AddDebug();

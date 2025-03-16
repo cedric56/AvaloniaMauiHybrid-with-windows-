@@ -9,6 +9,7 @@ using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Platform;
 using System;
+using System.Linq;
 using ContentView = Microsoft.Maui.Controls.ContentView;
 
 namespace Avalonia.Maui.Controls;
@@ -76,13 +77,15 @@ public class MauiControlHost : NativeControlHost
         return new iOS.UIViewControlHandle(native);
 #endif
 #elif WINDOWS10_0_19041_0_OR_GREATER
+        var app = Microsoft.Maui.Controls.Application.Current;
 
         var pageHandler = new ContentViewHandler();
-        pageHandler.SetMauiContext(AvaloniaAppBuilderExtensions.Context);
+        pageHandler.SetMauiContext(app?.Handler?.MauiContext ?? AvaloniaAppBuilderExtensions.Context);
 
             _page = new ContentView
             {
                 Handler = pageHandler,
+                Parent = app?.Windows?.FirstOrDefault(),// AvaloniaAppBuilderExtensions.WinUIWindow.Content,
                 Content = Content
             };
 
@@ -91,16 +94,16 @@ public class MauiControlHost : NativeControlHost
             var window = new MauiWinUIWindow();
             window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
             window.AppWindow.SetPresenter(Microsoft.UI.Windowing.AppWindowPresenterKind.FullScreen);
-            window.Content = _page.ToPlatform(AvaloniaAppBuilderExtensions.Context);
+            window.Content = _page.ToPlatform(app?.Handler?.MauiContext ?? AvaloniaAppBuilderExtensions.Context);
 
-            if (window.Content is Microsoft.UI.Xaml.FrameworkElement rootElement)
-            {
-                rootElement.RequestedTheme = (PlatformThemeVariant?)Avalonia.Application.Current.ActualThemeVariant == PlatformThemeVariant.Dark
-                    ? Microsoft.UI.Xaml.ElementTheme.Dark
-                    : Microsoft.UI.Xaml.ElementTheme.Light;
-            }
+        if (window.Content is Microsoft.UI.Xaml.FrameworkElement rootElement)
+        {
+            rootElement.RequestedTheme = (PlatformThemeVariant?)Avalonia.Application.Current.ActualThemeVariant == PlatformThemeVariant.Dark
+                ? Microsoft.UI.Xaml.ElementTheme.Dark
+                : Microsoft.UI.Xaml.ElementTheme.Light;
+        }
 
-            window.Activate();
+        window.Activate();
 
             return new PlatformHandle(window.WindowHandle, "HWMD");
 #else
